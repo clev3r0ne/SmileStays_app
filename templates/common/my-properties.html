@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        {% for property in properties %}
+            <div class="col-sm-4">
+                <div class="card m-5 bg-transparent" style="width: 400px;">
+                    <img src="{{ property.cover_photo.url }}" height="280" alt="cover photo"/>
+                    <div class="card-body text-white">
+                        <h3 class="card-title">{{ property.name }}</h3>
+                        <h5 class="card-text">{{ property.location }}
+                            - ${{ property.price_for_room_per_night }}/per night</h5>
+                        <div class="d-flex flex-row gap-2 justify-content-end">
+                            <a href="{% url 'details property' pk=property.pk %}" class="btn custom-btn">Details</a>
+                            <a href="{% url 'edit property' pk=property.pk %}" class="btn custom-btn">Edit</a>
+                            <a href="{% url 'delete property' pk=property.pk %}" class="btn custom-btn">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

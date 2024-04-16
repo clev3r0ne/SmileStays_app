@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+
+    <div class="card mb-3 mb-3 bg-transparent text-light" style="max-width: 100%;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ current_property.cover_photo.url }}" class="img-fluid rounded-start" alt="cover photo">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h3 class="card-title">{{ current_property.name }}</h3>
+                    <p class="card-text fs-5">
+                        Address: {{ current_property.location }} {{ current_property.address }}</p>
+                    <p class="card-text fs-5">Description: {{ current_property.description }}</p>
+                    <p class="card-text fs-5">Price: ${{ current_property.price_for_room_per_night }}/for a double room
+                        per night</p>
+                    <p class="card-text fs-5">Phone number:{{ current_property.phone_number }}</p>
+                    <p class="card-text fs-5">Category: {{ current_property.category }}</p>
+                    <p class="card-text"><small class="text-muted">Listed on: {{ current_property.listed_on }}</small>
+                    </p>
+                    <div class="d-flex flex-row gap-2 justify-content-end">
+                        <form action="{% url 'add photo' %}">
+                            <button class="btn custom-btn" type="submit">Add photo</button>
+                            <input type="hidden" name="property_id" value="{{ current_property.pk }}">
+                        </form>
+                        <a href="{% url 'edit property' pk=current_property.pk %}" class="btn btn-secondary">Edit</a>
+                        <a href="{% url 'delete property' pk=current_property.pk %}"
+                           class="btn btn-secondary">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+
+            {% for photo in current_property.propertyphoto_set.all %}
+                <div class="col-sm-3 m-3 border rounded border-info">
+                    <img src="{{ photo.image.url }}" width="300" height="250" alt="property photo">
+                    <div class="d-flex justify-content-end">
+                        <form action="{% url 'delete photo' pk=photo.pk %}">
+                            <input type="hidden" name="property_id" value="{{ current_property.pk }}">
+                            <button type="submit" class="btn btn-light">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+    {#    {% for review in current_property.review_set.all %}#}
+    {#        <div>{{ review.text }}</div>#}
+
+    {#    {% endfor %}#}
+    <section>
+        <div class="container my-5 py-5">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-8">
+                    <div class="card text-dark">
+                        <div class="card-body p-4">
+
+                            <h4 class="mb-0">Reviews</h4>
+                            <p class="fw-light mb-4 pb-2">Property reviews from users</p>
+
+                            <div class="card-body p-4">
+                                <div class="d-flex flex-start">
+                                    <img class="rounded-circle shadow-1-strong me-3"
+                                         src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp"
+                                         alt="avatar"
+                                         width="60"
+                                         height="60"/>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Maggie Marsh</h6>
+                                        <form method="post">
+                                            <div>
+                                                {{ form.text }}
+                                            </div>
+                                            {{ form.property.as_hidden }}
+                                            {% csrf_token %}
+                                            <div align="end">
+                                                <button class="btn custom-btn" type="submit">Add review</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-0"/>
+
+                            {% for review in current_property.review_set.all %}
+
+                                <div class="card-body p-4">
+                                    <div class="d-flex flex-start">
+                                        <img class="rounded-circle shadow-1-strong me-3"
+                                             src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp"
+                                             alt="avatar"
+                                             width="60"
+                                             height="60"/>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Maggie Marsh</h6>
+                                            <div class="d-flex align-items-center mb-3">
+                                                <p class="mb-0">
+                                                    {{ review.published_on }}
+                                                </p>
+                                            </div>
+                                            <p class="mb-0 text-break">
+                                                {{ review.text }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div align="end">
+                                        <form method="post" action="{% url 'delete review' pk=review.pk %}">
+                                            {{ review_delete_form }}
+                                            <button type="submit" class="btn btn-secondary">Delete review
+                                            </button>
+                                            {% csrf_token %}
+                                        </form>
+                                    </div>
+                                </div>
+                                <hr class="my-0"/>
+
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+

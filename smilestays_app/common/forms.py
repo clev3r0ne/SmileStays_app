@@ -1,0 +1,20 @@
+from django import forms
+
+from smilestays_app.common.models import Review
+
+
+class AddReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['text', 'property']
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'style' : "width:650px; height:150px;",
+            }),
+        }
+
+
+class DeleteReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ()
