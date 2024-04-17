@@ -11,8 +11,8 @@ class PropertyPhoto(models.Model):
 
     created_on = models.DateTimeField(
         auto_now_add=True,
-        blank = True,
-        null = False
+        blank=True,
+        null=False
     )
 
     property = models.ForeignKey(
@@ -20,3 +20,6 @@ class PropertyPhoto(models.Model):
         on_delete=models.CASCADE
     )
 
+    def __str__(self):
+        created_on = self.created_on.strftime("%Y-%m-%d %H:%M")
+        return f'{self.property.name} photo - {created_on}'

@@ -22,3 +22,7 @@ class Review(models.Model):
 
     #TO DO: profile = models.ForeignKey()
 
+    def __str__(self):
+        published_on = self.published_on.strftime("%Y-%m-%d %H:%M")
+        return f'Review published on {published_on} for {self.property.name}'
+

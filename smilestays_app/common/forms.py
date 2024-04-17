@@ -9,7 +9,7 @@ class AddReviewForm(forms.ModelForm):
         fields = ['text', 'property']
         widgets = {
             'text': forms.Textarea(attrs={
-                'style' : "width:650px; height:150px;",
+                'style' : "width:580px; height:150px;",
             }),
         }
 

@@ -57,3 +57,9 @@ class Property(models.Model):
 
 
     #TO DO: profile = models.ForeignKey()
+
+    class Meta:
+        verbose_name_plural = 'Properties'
+
+    def __str__(self):
+        return f'{self.name} - {self.location}'

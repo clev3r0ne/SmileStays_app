@@ -43,7 +43,7 @@ class DetailsPropertyView(FormMixin, DetailView):
 
     queryset = Property.objects.all() \
                 .prefetch_related('propertyphoto_set') \
-                .prefetch_related('review_set')
+                .prefetch_related(Prefetch('review_set', queryset=Review.objects.order_by('-published_on')))
 
     def get_success_url(self):
         return reverse_lazy('details property', kwargs={'pk': self.object.pk})
