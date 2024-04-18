@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+
+
+    {#    <div class="d-flex justify-content-center">#}
+    <div class="d-flex border border-3 border-info bg-info-subtle rounded mx-auto p-4">
+        <div class="text-secondary justify-content-center">
+            <h4>Register:</h4>
+            <form method="post" action="{% url 'sign up' %}" enctype="multipart/form-data">
+                {{ form|crispy }}
+                {% csrf_token %}
+                <button type="submit" class="btn custom-btn">Register</button>
+            </form>
+        </div>
+        {#        <p>Don't have an account? <a href="#!" class="link-info">Register here</a></p>#}
+    </div>
+    {#    </div>#}
+
+{% endblock %}

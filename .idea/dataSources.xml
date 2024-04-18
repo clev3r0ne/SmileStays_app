@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="smilestays_app" uuid="46d45c3a-7467-482a-a323-3fd15a924d64">
+    <data-source source="LOCAL" name="smilestays_db" uuid="e439c399-27e9-4f8b-a2e7-36bb24c23e13">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>

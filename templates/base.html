@@ -77,26 +77,30 @@
                        role="button"
                        aria-haspopup="true" aria-expanded="false">Categories</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link fs-4 active link-light" href="{% url 'my properties' %}">My Properties</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fs-4 active link-light" href="{% url 'add property' %}">List Property
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fs-4 active link-light" href="">Logout
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fs-4 link-light" href="#">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fs-4 link-light" href="#">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fs-4 link-light" href="/">Profile</a>
-                </li>
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 active link-light" href="{% url 'my properties' %}">My Properties</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 active link-light" href="{% url 'add property' %}">List new Property
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 link-light"
+                           href="{% url 'details profile' pk=request.user.pk %}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 active link-light" href="{% url 'sign out' %}">Logout
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 link-light" href="{% url 'sign in' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 link-light" href="{% url 'sign up' %}">Register</a>
+                    </li>
+                {% endif %}
             </ul>
             <form class="d-flex" method="get" action="{% url 'index' %}">
                 <input name="search_name_pattern" value="{{ search_name_pattern }}"

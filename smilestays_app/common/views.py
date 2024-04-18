@@ -1,9 +1,15 @@
+from django.contrib.auth.mixins import AccessMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView
 
 from smilestays_app.common.forms import DeleteReviewForm
+from smilestays_app.common.mixins import IfNotOwnerRedirectMixin
 from smilestays_app.common.models import Review
 from smilestays_app.properties.models import Property
+
+
+
 
 
 class HomeView(ListView):
@@ -26,7 +32,8 @@ class HomeView(ListView):
         context['search_name_pattern'] = search_name_pattern or ''
 
         if search_name_pattern:
-            context['properties'] = Property.objects.all().filter(name__icontains=search_name_pattern.lower()).order_by('listed_on')
+            context['properties'] = (Property.objects.all().filter(
+                name__icontains=search_name_pattern.lower()).order_by('listed_on'))
 
         elif category:
             context['properties'] = Property.objects.all().filter(category=category).order_by('listed_on')
@@ -35,24 +42,18 @@ class HomeView(ListView):
 
 
 class MyPropertiesView(ListView):
-    context_object_name = 'properties'
-    template_name = 'common/my-properties.html'
     model = Property
+    template_name = 'common/my-properties.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['properties'] = Property.objects.all().filter(user=self.request.user)
+        return context
 
 
 
-class DeleteReviewView(DeleteView):
+class DeleteReviewView(IfNotOwnerRedirectMixin, DeleteView):
     model = Review
-    # http_method_names = ['delete']
-
-
-    # def dispatch(self, request, *args, **kwargs):
-    #     # # safety checks go here ex: is user allowed to delete?
-    #     # if request.user.username != kwargs['username']:
-    #     #     return HttpResponseForbidden()
-    #     # else:
-    #         handler = getattr(self, 'delete')
-    #         return handler(request, *args, **kwargs)
 
     def get_form(self, form_class=None):
         review_delete_form = super().get_form(form_class=DeleteReviewForm)

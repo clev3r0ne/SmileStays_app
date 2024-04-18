@@ -6,8 +6,9 @@ from smilestays_app.photos.models import PropertyPhoto
 from smilestays_app.properties.models import Property
 
 
+
 class AddPhotoView(CreateView):
-    Model = PropertyPhoto
+    queryset = PropertyPhoto.objects.all().select_related('property__user')
     template_name = 'photos/add-photo.html'
     form_class = AddPhotoForm
 
@@ -21,6 +22,7 @@ class AddPhotoView(CreateView):
     def get_success_url(self):
         property_id = self.request.GET.get('property_id')
         return reverse_lazy('details property', kwargs={'pk': property_id})
+
 
 
 class DeletePhotoView(DeleteView):

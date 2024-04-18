@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
 from django.db import models
 
@@ -56,7 +57,10 @@ class Property(models.Model):
     price_for_room_per_night = models.IntegerField()
 
 
-    #TO DO: profile = models.ForeignKey()
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         verbose_name_plural = 'Properties'

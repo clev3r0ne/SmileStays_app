@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load crispy_forms_filters %}
 
 {% block content %}
@@ -20,15 +21,18 @@
                     <p class="card-text fs-5">Category: {{ current_property.category }}</p>
                     <p class="card-text"><small class="text-muted">Listed on: {{ current_property.listed_on }}</small>
                     </p>
-                    <div class="d-flex flex-row gap-2 justify-content-end">
-                        <form action="{% url 'add photo' %}">
-                            <button class="btn custom-btn" type="submit">Add photo</button>
-                            <input type="hidden" name="property_id" value="{{ current_property.pk }}">
-                        </form>
-                        <a href="{% url 'edit property' pk=current_property.pk %}" class="btn btn-secondary">Edit</a>
-                        <a href="{% url 'delete property' pk=current_property.pk %}"
-                           class="btn btn-secondary">Delete</a>
-                    </div>
+                    {% if request.user == current_property.user %}
+                        <div class="d-flex flex-row gap-2 justify-content-end">
+                            <form action="{% url 'add photo' %}">
+                                <button class="btn custom-btn" type="submit">Add photo</button>
+                                <input type="hidden" name="property_id" value="{{ current_property.pk }}">
+                            </form>
+                            <a href="{% url 'edit property' pk=current_property.pk %}"
+                               class="btn btn-secondary">Edit</a>
+                            <a href="{% url 'delete property' pk=current_property.pk %}"
+                               class="btn btn-secondary">Delete</a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -43,7 +47,9 @@
                     <div class="d-flex justify-content-end">
                         <form action="{% url 'delete photo' pk=photo.pk %}">
                             <input type="hidden" name="property_id" value="{{ current_property.pk }}">
-                            <button type="submit" class="btn btn-light">Delete</button>
+                            {% if request.user == current_property.user %}
+                                <button type="submit" class="btn btn-light">Delete</button>
+                            {% endif %}
                         </form>
                     </div>
                 </div>
@@ -53,10 +59,6 @@
     </div>
 
 
-    {#    {% for review in current_property.review_set.all %}#}
-    {#        <div>{{ review.text }}</div>#}
-
-    {#    {% endfor %}#}
     <section>
         <div class="container my-5 py-5">
             <div class="row d-flex justify-content-center">
@@ -69,18 +71,27 @@
 
                             <div class="card-body p-4">
                                 <div class="d-flex flex-start">
-                                    <img class="rounded-circle shadow-1-strong me-3"
-                                         src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp"
-                                         alt="avatar"
-                                         width="60"
-                                         height="60"/>
+                                    {% if request.user.profile.profile_pic %}
+                                        <img class="rounded-circle shadow-1-strong me-3"
+                                             src="{{ review.user.profile.profile_pic.url }}"
+                                             alt="avatar"
+                                             width="60"
+                                             height="60"/>
+                                    {% else %}
+                                        <img class="rounded-circle shadow-1-strong me-3"
+                                             src="{% static 'images/no-profile-pic.png' %}"
+                                             alt="avatar"
+                                             width="60"
+                                             height="60"/>
+                                    {% endif %}
                                     <div>
-                                        <h6 class="fw-bold mb-1">Maggie Marsh</h6>
+                                        <h6 class="fw-bold mb-1">{{ request.user.username }}</h6>
                                         <form method="post">
                                             <div>
                                                 {{ form.text }}
                                             </div>
                                             {{ form.property.as_hidden }}
+                                            {{ form.user.as_hidden }}
                                             {% csrf_token %}
                                             <div align="end">
                                                 <button class="btn custom-btn" type="submit">Add review</button>
@@ -95,13 +106,25 @@
 
                                 <div class="card-body p-4">
                                     <div class="d-flex flex-start">
-                                        <img class="rounded-circle shadow-1-strong me-3"
-                                             src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp"
-                                             alt="avatar"
-                                             width="60"
-                                             height="60"/>
+                                        {% if review.user.profile.profile_pic %}
+                                            <img class="rounded-circle shadow-1-strong me-3"
+                                                 src="{{ review.user.profile.profile_pic.url }}"
+                                                 alt="avatar"
+                                                 width="60"
+                                                 height="60"/>
+                                        {% else %}
+                                            <img class="rounded-circle shadow-1-strong me-3"
+                                                 src="{% static 'images/no-profile-pic.png' %}"
+                                                 alt="avatar"
+                                                 width="60"
+                                                 height="60"/>
+                                        {% endif %}
                                         <div>
-                                            <h6 class="fw-bold mb-1">Maggie Marsh</h6>
+                                            {% if review.user.profile.first_name and review.user.profile.last_name %}
+                                                <h6 class="fw-bold mb-1">{{ review.user.profile.first_name }} {{ review.user.profile.last_name }}</h6>
+                                            {% else %}
+                                                <h6 class="fw-bold mb-1">{{ review.user.username }}</h6>
+                                            {% endif %}
                                             <div class="d-flex align-items-center mb-3">
                                                 <p class="mb-0">
                                                     {{ review.published_on }}
@@ -112,14 +135,16 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div align="end">
-                                        <form method="post" action="{% url 'delete review' pk=review.pk %}">
-                                            {{ review_delete_form }}
-                                            <button type="submit" class="btn btn-secondary">Delete review
-                                            </button>
-                                            {% csrf_token %}
-                                        </form>
-                                    </div>
+                                    {% if request.user == review.user %}
+                                        <div align="end">
+                                            <form method="post" action="{% url 'delete review' pk=review.pk %}">
+                                                {{ review_delete_form }}
+                                                <button type="submit" class="btn btn-secondary">Delete review
+                                                </button>
+                                                {% csrf_token %}
+                                            </form>
+                                        </div>
+                                    {% endif %}
                                 </div>
                                 <hr class="my-0"/>
 

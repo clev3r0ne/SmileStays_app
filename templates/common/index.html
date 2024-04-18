@@ -59,7 +59,9 @@
                         <h5 class="card-text">{{ property.location }}
                             - ${{ property.price_for_room_per_night }}/per night</h5>
                         <div class="d-flex flex-row gap-2 justify-content-end">
-                            <a href="{% url 'details property' pk=property.pk %}" class="btn custom-btn">See details</a>
+                            {% if request.user == property.user %}
+                                <a href="{% url 'edit property' pk=property.pk %}" class="btn custom-btn">Edit property</a>
+                            {% endif %}
                             <a href="{% url 'details property' pk=property.pk %}" class="btn custom-btn">See details</a>
                         </div>
                     </div>

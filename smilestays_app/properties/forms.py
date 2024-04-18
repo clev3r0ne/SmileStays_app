@@ -6,7 +6,7 @@ from smilestays_app.properties.models import Property
 class AddPropertyForm(forms.ModelForm):
     class Meta:
         model = Property
-        fields = '__all__'
+        exclude = ['user']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': "form-control border-success",
@@ -33,11 +33,6 @@ class AddPropertyForm(forms.ModelForm):
                 'style': 'max-width: 300px;',
                 'placeholder': 'Phone number'
             }),
-            # 'cover_photo': forms.ImageField(attrs={
-            #     'class': "form-control",
-            #     'style': 'max-width: 300px;',
-            #     'placeholder': 'Cover photo'
-            # }),
             'category': forms.Select(attrs={
                 'class': "form-control border-success",
                 'style': 'max-width: 300px;',
@@ -47,8 +42,11 @@ class AddPropertyForm(forms.ModelForm):
                 'class': "form-control border-success",
                 'style': 'max-width: 300px;',
                 'placeholder': 'Price in USD($)'
-            })
+            }),
+            'user': forms.HiddenInput(),
         }
+
+
 
 
 class EditPropertyForm(forms.ModelForm):

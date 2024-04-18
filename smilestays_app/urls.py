@@ -8,5 +8,6 @@ urlpatterns = ([
     path('admin/', admin.site.urls),
     path('', include('smilestays_app.common.urls')),
     path('properties/', include('smilestays_app.properties.urls')),
-    path('photos/', include('smilestays_app.photos.urls'))
+    path('photos/', include('smilestays_app.photos.urls')),
+    path('accounts/', include('smilestays_app.accounts.urls'))
 ]) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="d-flex border border-3 border-info bg-info-subtle rounded mx-auto p-4 mt-5">
+        <h2 class="text-secondary">Are you sure you want to delete your profile?</h2>
+        <form method="post">
+            {{ form }}
+            {% csrf_token %}
+            <button class="btn btn-info mt-5" onclick="history.back()" type="button">
+                Return
+            </button>
+            <button type="submit" class="btn btn-info mt-5">
+                Delete
+            </button>
+        </form>
+    </div>
+
+{% endblock %}

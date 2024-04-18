@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'smilestays_app.common',
     'smilestays_app.photos',
     'smilestays_app.properties',
+    'smilestays_app.accounts',
     'crispy_forms',
     'crispy_bootstrap4',
 ]
@@ -68,6 +69,7 @@ DATABASES = {
 }
 
 
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -82,6 +84,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+if DEBUG:
+    AUTH_PASSWORD_VALIDATORS = []
 
 LANGUAGE_CODE = 'en-us'
 
@@ -101,4 +106,8 @@ MEDIA_URL= '/media/'
 MEDIA_ROOT = BASE_DIR / 'mediafiles/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
+LOGIN_URL = 'sign in'
 
