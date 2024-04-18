@@ -18,6 +18,12 @@ class AddPropertyView(CreateView):
     def get_success_url(self):
         return reverse('details property', kwargs={'pk': self.object.pk})
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=AddPropertyForm)
+        form.instance.user = self.request.user
+
+        return form
+
 
 
 
