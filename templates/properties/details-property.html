@@ -73,7 +73,7 @@
                                 <div class="d-flex flex-start">
                                     {% if request.user.profile.profile_pic %}
                                         <img class="rounded-circle shadow-1-strong me-3"
-                                             src="{{ review.user.profile.profile_pic.url }}"
+                                             src="{{ request.user.profile.profile_pic.url }}"
                                              alt="avatar"
                                              width="60"
                                              height="60"/>
